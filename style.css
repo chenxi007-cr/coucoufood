@@ -1,0 +1,784 @@
+/* ==========================================================================
+   1. 基础重置
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #ffffff; /* 铺满白色背景 */
+  color: #222;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==========================================================================
+   2. 主容器：全屏铺满（取消 max-width 和两边留白）
+   ========================================================================== */
+.container {
+  width: 100%;       /* 铺满整个屏幕宽度 */
+  max-width: 100%;  /* 移除 680px 限制 */
+  margin: 0;
+  background: #ffffff;
+  min-height: 100vh;
+  position: relative;
+  /* 预留底部固定按钮的高度 + Safe Area */
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
+  box-shadow: none; /* 移除卡片阴影 */
+}
+
+/* ==========================================================================
+   3. Header 顶部导航栏 (全屏)
+   ========================================================================== */
+.top-navbar {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.nav-placeholder {
+  width: 32px;
+}
+
+.nav-logo {
+  height: 42px;
+  width: auto;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.menu-toggle-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* ==========================================================================
+   4. 侧边栏与遮罩层
+   ========================================================================== */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  display: none;
+  backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #ffffff;
+  z-index: 201;
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 24px;
+  box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+}
+
+.sidebar.active {
+  right: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.sidebar-header h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.sidebar-menu {
+  list-style: none;
+  margin-top: 20px;
+}
+
+.sidebar-menu li {
+  margin-bottom: 12px;
+}
+
+.sidebar-menu a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  display: block;
+  padding: 12px 14px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.sidebar-menu a:hover {
+  background: #f5f5f5;
+}
+
+/* ==========================================================================
+   5. 店铺信息与 Banner 区域 (全屏自适应)
+   ========================================================================== */
+.profile-info-section {
+  padding: 20px 24px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-logo img {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+
+.profile-details {
+  flex: 1;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title-row h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.3;
+}
+
+.share-btn {
+  background: #f0f0f0;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.location {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+.location i {
+  color: #d9534f;
+  margin-right: 4px;
+}
+
+.banner-section {
+  padding: 0 24px 20px 24px;
+}
+
+.banner-img {
+  width: 100%;
+  height: 240px; /* PC 端更高的横幅体验 */
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.tagline {
+  font-size: 0.95rem;
+  color: #777;
+  text-align: center;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: #eee;
+  margin: 0 24px;
+}
+
+/* ==========================================================================
+   6. 搜索框与分类选择
+   ========================================================================== */
+.filter-section {
+  padding: 20px 24px;
+}
+
+.search-box {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 1rem;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  border: 1px solid #e0e0e0;
+  border-radius: 24px;
+  outline: none;
+  font-size: 0.95rem;
+  background-color: #fafafa;
+  transition: all 0.2s;
+}
+
+.search-box input:focus {
+  border-color: #333;
+  background-color: #fff;
+}
+
+.category-pills {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.category-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.pill-btn {
+  padding: 8px 20px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s;
+}
+
+.pill-btn.active {
+  background: #222;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   7. 商品展示区 (响应式 Grid 布局，自动铺满屏幕)
+   ========================================================================== */
+.products-section {
+  padding: 0 24px;
+}
+
+/* 默认移动端：单列 */
+.product-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.product-item {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-top {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.product-thumb {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #f8f8f8;
+}
+
+.product-title-group {
+  flex: 1;
+}
+
+.product-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #222;
+  line-height: 1.3;
+}
+
+.product-sub {
+  font-size: 0.88rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+.product-desc {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 14px;
+  line-height: 1.4;
+  background: #fafafa;
+  padding: 10px 12px;
+  border-radius: 8px;
+  flex: 1; /* 让不同高度卡片内部对齐 */
+}
+
+.warning-text {
+  color: #d9534f;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.product-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.limit-tag {
+  font-size: 0.72rem;
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.product-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.qty-btn.btn-plus {
+  background: #222;
+  color: #fff;
+  border-color: #222;
+}
+
+.qty-btn:active {
+  transform: scale(0.95);
+}
+
+.qty-count {
+  font-size: 1rem;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   8. 结算汇总与表单区域 (全屏扩展)
+   ========================================================================== */
+.checkout-summary-section {
+  padding: 24px;
+  margin-top: 24px;
+  border-top: 8px solid #f4f5f7;
+}
+
+.subtotal-row, .delivery-fee-row, .total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.total-row {
+  font-size: 1.2rem;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed #ddd;
+}
+
+.section-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #555;
+  margin: 20px 0 10px 0;
+  letter-spacing: 0.5px;
+}
+
+.delivery-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.option-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option-card:has(input:checked) {
+  border-color: #222;
+  background-color: #fafafa;
+}
+
+.option-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.option-cost {
+  font-weight: 600;
+  color: #333;
+}
+
+.customer-details-section {
+  margin-top: 28px;
+}
+
+.form-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 14px;
+  letter-spacing: 0.5px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  margin-bottom: 8px;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+  border-color: #222;
+}
+
+.phone-input {
+  display: flex;
+  align-items: center;
+}
+
+.phone-input .prefix {
+  background: #eee;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.phone-input input {
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   9. 底部固定 Proceed 按钮 (100% 宽度铺满底部)
+   ========================================================================== */
+.fixed-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* 全屏宽度 */
+  background: #ffffff;
+  padding: 12px 24px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  border-top: 1px solid #eee;
+  z-index: 100;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.proceed-btn {
+  width: 100%;
+  background: #25D366;
+  color: #ffffff;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 30px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.badge-count {
+  background: #ffffff;
+  color: #25D366;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   10. Order Summary Modal 弹窗
+   ========================================================================== */
+.summary-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 300;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.summary-modal-overlay.active {
+  display: flex;
+}
+
+.summary-modal-content {
+  background: #ffffff;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 16px 16px 0 0;
+  padding: 24px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.25s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.summary-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.summary-modal-body {
+  overflow-y: auto;
+  padding: 16px 0;
+  flex: 1;
+}
+
+.summary-section-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.summary-item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.summary-calc-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.92rem;
+  margin-top: 8px;
+  color: #555;
+}
+
+.summary-total-row {
+  font-size: 1.15rem;
+  color: #111;
+  border-top: 1px dashed #ddd;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.summary-cust-info {
+  background: #f9f9f9;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+.summary-modal-footer {
+  display: flex;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.back-modal-btn {
+  background: #f0f0f0;
+  border: none;
+  width: 48px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.whatsapp-btn {
+  flex: 1;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   11. 大屏平板与 PC 端响应式网格 (根据屏幕宽度自动多列显示)
+   ========================================================================== */
+
+/* 1. 平板 / 小屏幕电脑 (≥ 768px)：商品显示为 2 列，配送选项显示 2 列 */
+@media (min-width: 768px) {
+  .banner-img {
+    height: 300px;
+  }
+  
+  .product-list {
+    grid-template-columns: repeat(2, 1fr); /* 2列 */
+  }
+
+  .delivery-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 配送选项 2列 */
+  }
+
+  .summary-modal-overlay {
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .summary-modal-content {
+    border-radius: 12px;
+  }
+}
+
+/* 2. PC 大屏幕 (≥ 1200px)：商品显示为 3 列或 4 列 */
+@media (min-width: 1200px) {
+  .product-list {
+    grid-template-columns: repeat(3, 1fr); /* 3列 */
+  }
+  
+  .delivery-options {
+    grid-template-columns: repeat(4, 1fr); /* 4列全展开 */
+  }
+}
+
+@media (min-width: 1600px) {
+  .product-list {
+    grid-template-columns: repeat(4, 1fr); /* 超大屏 4列 */
+  }
+}

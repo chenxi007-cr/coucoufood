@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Coucou food: The Selections</title>
+
+  <!-- 网页标签页 Logo (Favicon) -->
+  <link rel="icon" type="image/jpeg" href="images/coucoufood logo.jpeg">
+  <link rel="shortcut icon" type="image/jpeg" href="images/coucoufood logo.jpeg">
+
+  <link rel="stylesheet" href="style.css">
+  <!-- 引入 FontAwesome 图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- 1. 顶部 Header (中间 Logo + 右侧三条杠) -->
+    <header class="top-navbar">
+      <div class="nav-placeholder"></div>
+      
+      <!-- 点击 Logo 刷新页面 -->
+      <a href="javascript:void(0)" onclick="location.reload()" class="logo-link">
+        <img src="images/coucoufood logo.jpeg" alt="CouCou Food" class="nav-logo">
+      </a>
+
+      <!-- 右侧三条杠菜单按钮 -->
+      <button class="menu-toggle-btn" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </header>
+
+    <!-- 侧边栏菜单 -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>商品分类</h3>
+        <button class="close-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <ul class="sidebar-menu">
+        <li><a href="#" onclick="filterCategory('all'); toggleSidebar();">全部商品 (All)</a></li>
+        <li><a href="#" onclick="filterCategory('sausage'); toggleSidebar();">香肠类 (Sausage)</a></li>
+        <li><a href="#" onclick="filterCategory('wagyu'); toggleSidebar();">和牛类 (Wagyu)</a></li>
+        <li><a href="#" onclick="filterCategory('beverages'); toggleSidebar();">饮料类 (Beverages)</a></li>
+      </ul>
+    </aside>
+
+    <!-- 2. 店铺基本信息区 -->
+    <section class="profile-info-section">
+      <div class="profile-header">
+        <div class="profile-logo">
+          <img src="images/coucoufood logo.jpeg" alt="coucoufood logo" id="brandLogo">
+        </div>
+        
+        <div class="profile-details">
+          <div class="title-row">
+            <h1>Coucou food: The Selections</h1>
+            <button class="share-btn" onclick="shareWebsite()"><i class="fa-solid fa-share-nodes"></i></button>
+          </div>
+          <div class="location">
+            <i class="fa-solid fa-location-dot"></i> Gelugor, Penang | Puchong, KL
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 横幅与品牌简介 -->
+    <section class="banner-section">
+      <img src="https://via.placeholder.com/600x200" alt="CouCou Food photo" class="banner-img">
+      <p class="tagline">from Japan 🇯🇵 to your Table.</p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- 4. 搜索框与分类选择栏 -->
+    <section class="filter-section">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" placeholder="搜索商品 (例如: sausage, 黑猪肉...)" onkeyup="filterProducts()">
+      </div>
+
+      <div class="category-pills">
+        <button class="pill-btn active" onclick="filterCategory('all', this)">全部</button>
+        <button class="pill-btn" onclick="filterCategory('sausage', this)">Sausage</button>
+        <button class="pill-btn" onclick="filterCategory('wagyu', this)">Wagyu</button>
+        <button class="pill-btn" onclick="filterCategory('beverages', this)">Beverages</button>
+      </div>
+    </section>
+
+    <!-- 5. 商品展示区 -->
+    <section class="products-section">
+      <div class="product-list" id="productList">
+        
+        <!-- 商品 1 (Sausage) -->
+        <div class="product-item" data-id="p1" data-category="sausage" data-name="japanese kurobuta sausage 黑猪肉香肠" data-price="28.00" data-limit="10">
+          <div class="product-top">
+            <img src="https://via.placeholder.com/100x100" alt="Japanese Kurobuta Sausage" class="product-thumb">
+            <div class="product-title-group">
+              <h3 class="product-title">Japanese Kurobuta Sausage</h3>
+              <p class="product-sub">黑猪肉香肠</p>
+            </div>
+          </div>
+          <div class="product-desc">
+            <p>Juicy and tender premium Kurobuta pork sausage with authentic Japanese seasoning.</p>
+            <p>Packing Size: 250G | Product Origin: Japan</p>
+            <p class="warning-text">⚠️ Keep Frozen | 需冷冻保存</p>
+          </div>
+          <div class="product-bottom">
+            <div class="price-limit">
+              <span class="limit-tag">LIMIT: 10</span>
+              <div class="product-price">RM 28.00</div>
+            </div>
+            <div class="quantity-control">
+              <button class="qty-btn btn-minus" onclick="updateQty('p1', -1)" style="display:none;">-</button>
+              <span class="qty-count" id="qty-p1" style="display:none;">0</span>
+              <button class="qty-btn btn-plus" onclick="updateQty('p1', 1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 商品 2 (Sausage) -->
+        <div class="product-item" data-id="p2" data-category="sausage" data-name="smoked cheese sausage 芝士香肠" data-price="25.00" data-limit="10">
+          <div class="product-top">
+            <img src="https://via.placeholder.com/100x100" alt="Smoked Cheese Sausage" class="product-thumb">
+            <div class="product-title-group">
+              <h3 class="product-title">Smoked Cheese Sausage</h3>
+              <p class="product-sub">烟熏芝士香肠</p>
+            </div>
+          </div>
+          <div class="product-desc">
+            <p>Rich smoked flavor stuffed with melting cheddar cheese inside.</p>
+            <p>Packing Size: 200G | Product Origin: Japan</p>
+          </div>
+          <div class="product-bottom">
+            <div class="price-limit">
+              <span class="limit-tag">LIMIT: 10</span>
+              <div class="product-price">RM 25.00</div>
+            </div>
+            <div class="quantity-control">
+              <button class="qty-btn btn-minus" onclick="updateQty('p2', -1)" style="display:none;">-</button>
+              <span class="qty-count" id="qty-p2" style="display:none;">0</span>
+              <button class="qty-btn btn-plus" onclick="updateQty('p2', 1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 商品 3 (Wagyu) -->
+        <div class="product-item" data-id="p3" data-category="wagyu" data-name="japanese a5 wagyu slice A5和牛" data-price="180.00" data-limit="10">
+          <div class="product-top">
+            <img src="https://via.placeholder.com/100x100" alt="Japanese A5 Wagyu" class="product-thumb">
+            <div class="product-title-group">
+              <h3 class="product-title">Japanese A5 Wagyu Slice</h3>
+              <p class="product-sub">A5 和牛切片</p>
+            </div>
+          </div>
+          <div class="product-desc">
+            <p>Melt-in-your-mouth texture with rich marbling. Perfect for Yakiniku or Shabu-shabu.</p>
+            <p>Packing Size: 200G | Product Origin: Miyazaki, Japan</p>
+          </div>
+          <div class="product-bottom">
+            <div class="price-limit">
+              <span class="limit-tag">LIMIT: 10</span>
+              <div class="product-price">RM 180.00</div>
+            </div>
+            <div class="quantity-control">
+              <button class="qty-btn btn-minus" onclick="updateQty('p3', -1)" style="display:none;">-</button>
+              <span class="qty-count" id="qty-p3" style="display:none;">0</span>
+              <button class="qty-btn btn-plus" onclick="updateQty('p3', 1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 商品 4 (Beverages) -->
+        <div class="product-item" data-id="p4" data-category="beverages" data-name="uji green tea 宇治绿茶" data-price="32.00" data-limit="10">
+          <div class="product-top">
+            <img src="https://via.placeholder.com/100x100" alt="Uji Green Tea" class="product-thumb">
+            <div class="product-title-group">
+              <h3 class="product-title">Uji Green Tea</h3>
+              <p class="product-sub">宇治绿茶</p>
+            </div>
+          </div>
+          <div class="product-desc">
+            <p>Authentic Japanese green tea brewed from Kyoto Uji tea leaves.</p>
+            <p>Packing Size: 500ML | Product Origin: Kyoto, Japan</p>
+          </div>
+          <div class="product-bottom">
+            <div class="price-limit">
+              <span class="limit-tag">LIMIT: 10</span>
+              <div class="product-price">RM 32.00</div>
+            </div>
+            <div class="quantity-control">
+              <button class="qty-btn btn-minus" onclick="updateQty('p4', -1)" style="display:none;">-</button>
+              <span class="qty-count" id="qty-p4" style="display:none;">0</span>
+              <button class="qty-btn btn-plus" onclick="updateQty('p4', 1)">+</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="noResults" class="no-results" style="display: none; text-align: center; padding: 20px; color: #888;">
+        未找到相关商品
+      </div>
+    </section>
+
+    <!-- 6. 小计汇总与配送方式区域 -->
+    <section class="checkout-summary-section">
+      <div class="subtotal-row">
+        <span>Subtotal</span>
+        <span id="subtotalDisplay">RM0.00</span>
+      </div>
+
+      <div class="delivery-section">
+        <label class="section-label">DELIVERY OPTION(S)*</label>
+        
+        <div class="delivery-options">
+          <label class="option-card">
+            <input type="radio" name="delivery" value="Pickup - Gelugor" data-cost="0" checked onclick="calculateTotals()">
+            <div class="option-info">
+              <span class="option-title">Pickup - Gelugor</span>
+              <span class="option-cost">Free</span>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="delivery" value="Grab/Lalamove - Penang Island" data-cost="10" onclick="calculateTotals()">
+            <div class="option-info">
+              <span class="option-title">Grab/Lalamove - Penang Island</span>
+              <span class="option-cost">RM10.00</span>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="delivery" value="Grab/Lalamove - Penang Mainland" data-cost="20" onclick="calculateTotals()">
+            <div class="option-info">
+              <span class="option-title">Grab/Lalamove - Penang Mainland</span>
+              <span class="option-cost">RM20.00</span>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="delivery" value="Outstation West M'sia (Cold Box)" data-cost="35" onclick="calculateTotals()">
+            <div class="option-info">
+              <span class="option-title">Outstation, Peninsular M'sia (Cold Box)</span>
+              <span class="option-cost">RM35.00</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="delivery-fee-row">
+          <span>Delivery Fee:</span>
+          <span id="deliveryFeeDisplay">RM0.00</span>
+        </div>
+        <div class="total-row">
+          <strong>TOTAL</strong>
+          <strong id="finalTotalDisplay">RM0.00</strong>
+        </div>
+      </div>
+
+      <!-- 7. 客户信息填写 -->
+      <div class="customer-details-section">
+        <h3 class="form-title">CUSTOMER DETAILS</h3>
+        
+        <div class="form-group">
+          <label>Name*</label>
+          <input type="text" id="custName" placeholder="如: Tan Ah Kow" required>
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number*</label>
+          <div class="phone-input">
+            <span class="prefix">+60</span>
+            <input type="tel" id="custPhone" placeholder="123456789" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Address*</label>
+          <input type="text" id="custUnit" placeholder="Unit No / Floor / Block">
+          <textarea id="custAddress" rows="2" placeholder="Street Address"></textarea>
+          <input type="text" id="custPostcode" placeholder="Postcode">
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 底部固定 Proceed 按钮 -->
+    <div class="fixed-bottom-bar">
+      <button class="proceed-btn" onclick="openOrderSummary()">
+        <span class="badge-count" id="totalQtyBadge">0</span>
+        <span class="btn-text">Proceed <i class="fa-solid fa-chevron-right"></i></span>
+        <span class="btn-total" id="barTotalDisplay">RM0.00</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- 9. 订单总结弹窗 (Order Summary Modal) -->
+  <div class="summary-modal-overlay" id="summaryModal">
+    <div class="summary-modal-content">
+      <div class="summary-modal-header">
+        <h2>Order Summary</h2>
+        <button class="close-modal-btn" onclick="closeOrderSummary()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="summary-modal-body">
+        <div class="summary-section-title">Items</div>
+        <div class="summary-item-list" id="summaryItemList"></div>
+
+        <div class="summary-calc-row">
+          <span>Subtotal</span>
+          <span id="summarySubtotal">RM0.00</span>
+        </div>
+
+        <div class="summary-calc-row">
+          <span id="summaryDeliveryLabel">Delivery Fee:</span>
+          <span id="summaryDeliveryFee">RM0.00</span>
+        </div>
+
+        <div class="summary-calc-row summary-total-row">
+          <strong>TOTAL</strong>
+          <strong id="summaryTotal">RM0.00</strong>
+        </div>
+
+        <div class="summary-cust-info" id="summaryCustInfo"></div>
+      </div>
+
+      <div class="summary-modal-footer">
+        <button class="back-modal-btn" onclick="closeOrderSummary()"><i class="fa-solid fa-arrow-left"></i></button>
+        <button class="whatsapp-btn" onclick="sendToWhatsApp()"><i class="fa-brands fa-whatsapp"></i> Order via WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入独立 JS 文件 -->
+  <script src="script.js"></script>
+</body>
+</html>
